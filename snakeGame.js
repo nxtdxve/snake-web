@@ -19,6 +19,8 @@ let dx = 10;
 // Vertical velocity
 let dy = 0;
 
+let game_over = false;
+
 
 const snakeboard = document.getElementById("snakeboard");
 const snakeboard_ctx = snakeboard.getContext("2d");
@@ -28,10 +30,18 @@ main();
 gen_food();
 
 document.addEventListener("keydown", change_direction);
+document.addEventListener("keydown", restart_game);
 
 function main() {
 
-    if (has_game_ended()) return;
+    if (has_game_ended()) {
+        game_over = true;
+        snakeboard_ctx.fillStyle = 'rgb(255, 128, 128)';
+        snakeboard_ctx.font = '65px VT323';
+        snakeboard_ctx.textAlign = 'center';
+        snakeboard_ctx.textBaseline = 'middle';
+        snakeboard_ctx.fillText('Game Over', snakeboard.width / 2, snakeboard.height / 2);        return;
+    }
 
     changing_direction = false;
     setTimeout(function onTick() {
@@ -147,5 +157,28 @@ function move_snake() {
     } else {
         // Remove the last part of snake body
         snake.pop();
+    }
+}
+
+function restart_game(event) {
+    if(game_over) {
+        snake = [
+            { x: 200, y: 200 },
+            { x: 190, y: 200 },
+            { x: 180, y: 200 },
+            { x: 170, y: 200 },
+            { x: 160, y: 200 }
+        ];
+        
+        score = 0;
+        dx = 10;
+        dy = 0;
+        
+        game_over = false;
+        main();
+        gen_food();
+    }
+    else {
+        change_direction(event);
     }
 }
