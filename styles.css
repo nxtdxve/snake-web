@@ -1,0 +1,65 @@
+:root {
+    /* accent colors:
+    rgb(128, 192, 255) -- blue
+    rgb(255, 192, 128) -- orange
+    rgb(255, 128, 128) -- red 
+    */
+    --global-theme-accent: rgb(255, 192, 128);
+    --global-theme-text: rgb(200, 200, 200);
+    --global-theme-text-light: rgb(255, 255, 255);
+    --global-theme-text-hovered: rgb(255, 255, 255);
+    --global-theme-text-small: rgb(150, 150, 150);
+    --global-theme-container-bg: rgb(25, 25, 25);
+    --global-theme-element-bg-regular: rgb(20, 20, 20);
+    --global-theme-element-bg: rgb(20, 20, 20);
+    --global-theme-element-bg-active: rgb(30, 30, 30);
+    --global-theme-element-border: rgb(0, 0, 0);
+    --global-theme-font-family: "Verdana";
+}
+
+* {
+    font-family: var(--global-theme-font-family);
+    font-size: 16px;
+    color: var(--global-theme-text);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--global-theme-element-bg);
+    margin: 0;
+}
+
+#snakeboard {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid;
+    border-image: radial-gradient(circle at center, transparent, transparent, transparent, var(--global-theme-accent), transparent) 1;
+}
+
+
+
+#score {
+    margin-top: 10%;
+    font-family: 'VT323', monospace;
+    font-size: 96px;
+    text-shadow: 0 0 5px var(--global-theme-accent);
+    color: var(--global-theme-text);
+    text-align: center;
+}
+
+#score::before {
+    content: "Score: ";
+    color: var(--global-theme-text-small);
+    font-size: 24px;
+}
+
+#score::after {
+    content: " points";
+    color: var(--global-theme-text-small);
+    font-size: 24px;
+}
