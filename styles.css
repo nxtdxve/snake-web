@@ -44,7 +44,7 @@ body {
 
 
 #score {
-    margin-top: 10%;
+    margin-top: 2em;
     font-family: 'VT323', monospace;
     font-size: 96px;
     text-shadow: 0 0 5px var(--global-theme-accent);
@@ -62,4 +62,31 @@ body {
     content: " points";
     color: var(--global-theme-text-small);
     font-size: 24px;
+}
+
+button, select {
+    border-radius: 3px;
+    transition-duration: .5s;
+    height: 25px;
+    width: 10%;
+    background: var(--global-theme-element-bg);
+    border: 1px var(--global-theme-element-border) solid;
+    border-color: var(--global-theme-accent);
+}
+button:hover, select:hover {
+    color: var(--global-theme-text-hovered);
+    background: var(--global-theme-element-bg-active);
+    border-color: var(--global-theme-accent);
+    transform: scale(1.05); 
+    box-shadow: 0px 0px 10px var(--global-theme-accent-hovered); 
+}
+
+button:active, select:active {
+    background: var(--global-theme-element-bg-active);
+    transform: scale(1); 
+}
+
+button i {
+    text-shadow: 0 0 10px var(--global-theme-accent);
+    color: var(--global-theme-text);
 }
