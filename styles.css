@@ -45,13 +45,7 @@ body {
 
 
 #score {
-<<<<<<< HEAD
     margin-top: 2em;
-=======
-    position: absolute;
-    left: 0;
-    width: 100%;
->>>>>>> 97192669780ffb955475640f2ee486ff24593120
     font-family: 'VT323', monospace;
     font-size: 96px;
     text-shadow: 0 0 5px var(--global-theme-accent);
