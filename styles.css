@@ -66,6 +66,7 @@ body {
 }
 
 button, select {
+    position: flex;
     border-radius: 3px;
     transition-duration: .5s;
     height: 25px;
