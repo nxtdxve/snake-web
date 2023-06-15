@@ -13,15 +13,19 @@
 </head>
 
 <body>
-    <div class="separator"></div>
-    <div id="score">0</div>
-    <canvas id="snakeboard" width="400" height="400"></canvas>
-    <button class="scoreboardButton">
-        <i i="leaderboard" class="fa-solid fa-crown"></i>
-    </button>
-    <button class="scoreboardButton">
-        <i id="shop" class="fa-solid fa-shop"></i>
-    </button>
+    <div class="game-container">
+        <div id="score">0</div>
+        <canvas id="snakeboard" width="400" height="400"></canvas>
+        <div class="buttons">
+            <button class="scoreboardButton">
+                <i i="leaderboard" class="fa-solid fa-crown"></i>
+            </button>
+            <button class="shopButton">
+                <i id="shop" class="fa-solid fa-shop"></i>
+            </button>
+        </div>
+        <button id="startButton">Start Game</button>
+    </div>
 
 </body>
 <script src="snakeGame.js"></script>
