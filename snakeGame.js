@@ -35,6 +35,17 @@ document.getElementById('startButton').addEventListener('click', function() {
     this.remove();
 });
 
+document.addEventListener("keydown", startGameByKeyPress);
+
+function startGameByKeyPress(event) {
+    if(!game_started) {
+        game_started = true;
+        document.getElementById('startButton').remove();
+        main();
+        gen_food();
+    }
+}
+
 
 document.addEventListener("keydown", change_direction);
 document.addEventListener("keydown", restart_game);
