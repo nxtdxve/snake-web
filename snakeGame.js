@@ -20,19 +20,29 @@ let dx = 10;
 let dy = 0;
 
 let game_over = false;
+let game_started = false;
 
 
 const snakeboard = document.getElementById("snakeboard");
 const snakeboard_ctx = snakeboard.getContext("2d");
-// Start game
-main();
 
-gen_food();
+document.getElementById('startButton').addEventListener('click', function() {
+    if(!game_started) {
+        game_started = true;
+        main();
+        gen_food();
+    }
+    this.remove();
+});
+
 
 document.addEventListener("keydown", change_direction);
 document.addEventListener("keydown", restart_game);
 
 function main() {
+    if(!game_started) {
+        return;
+    }
 
     if (has_game_ended()) {
         game_over = true;
@@ -40,7 +50,10 @@ function main() {
         snakeboard_ctx.font = '65px VT323';
         snakeboard_ctx.textAlign = 'center';
         snakeboard_ctx.textBaseline = 'middle';
-        snakeboard_ctx.fillText('Game Over', snakeboard.width / 2, snakeboard.height / 2);        return;
+        snakeboard_ctx.fillText('Game Over', snakeboard.width / 2, snakeboard.height / 2);
+        snakeboard_ctx.font = '30px VT323';
+        snakeboard_ctx.fillText('Press any button to continue', snakeboard.width / 2, snakeboard.height / 2 + 40);        
+        return;
     }
 
     changing_direction = false;
