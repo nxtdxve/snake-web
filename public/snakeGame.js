@@ -108,14 +108,37 @@ function drawSnakePart(snakePart) {
 
 function has_game_ended() {
     for (let i = 4; i < snake.length; i++) {
-        if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
+      if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
     }
     const hitLeftWall = snake[0].x < 0;
     const hitRightWall = snake[0].x > snakeboard.width - 10;
     const hitToptWall = snake[0].y < 0;
     const hitBottomWall = snake[0].y > snakeboard.height - 10;
-    return hitLeftWall || hitRightWall || hitToptWall || hitBottomWall
-}
+    
+    if (hitLeftWall || hitRightWall || hitToptWall || hitBottomWall) {
+      game_over = true;
+      fetch('http://localhost:3000/topScores')
+        .then(response => response.json())
+        .then(data => {
+          const minTopScore = data.length < 5 ? 0 : data[data.length-1].score;
+          if (score > minTopScore) {
+            // Prompt the user for their name, then post the score
+            const username = prompt('Enter your username:');
+            postScore(username, score);
+          }
+          snakeboard_ctx.fillStyle = 'rgb(255, 128, 128)';
+          snakeboard_ctx.font = '65px VT323';
+          snakeboard_ctx.textAlign = 'center';
+          snakeboard_ctx.textBaseline = 'middle';
+          snakeboard_ctx.fillText('Game Over', snakeboard.width / 2, snakeboard.height / 2);
+          snakeboard_ctx.font = '30px VT323';
+          snakeboard_ctx.fillText('Press any button to continue', snakeboard.width / 2, snakeboard.height / 2 + 40);  
+        });
+      return true;
+    }
+  
+    return false;
+  }
 
 function random_food(min, max) {
     return Math.round((Math.random() * (max - min) + min) / 10) * 10;
@@ -206,3 +229,61 @@ function restart_game(event) {
         change_direction(event);
     }
 }
+
+document.getElementById('scoreboardButton').addEventListener('click', function() {
+    var scoreboard = document.getElementById('scoreboard');
+    if (scoreboard.classList.contains('active')) {
+        scoreboard.classList.remove('active');
+    } else {
+        scoreboard.classList.add('active');
+    }
+});
+
+function postScore(username, score) {
+    fetch('http://localhost:3000/score', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ username, score }),
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log('Score saved: ', data);
+      // Update the scoreboard
+      updateScoreboard();
+    })
+    .catch((error) => console.error('Error:', error));
+  }
+
+
+function updateScoreboard() {
+  fetch('http://localhost:3000/topScores')
+    .then(response => response.json())
+    .then(data => {
+      const scoreboard = document.getElementById('scores');
+      // Clear the current scoreboard
+      scoreboard.innerHTML = '';
+      // Add each score to the scoreboard
+      data.forEach((score, index) => {
+        const li = document.createElement('li');
+        const nameSpan = document.createElement('span');
+        nameSpan.className = 'player-name';
+        nameSpan.textContent = score.username;
+        const scoreSpan = document.createElement('span');
+        scoreSpan.className = 'player-score';
+        scoreSpan.textContent = score.score;
+        if (index === 0) {
+          const crownIcon = document.createElement('i');
+          crownIcon.className = 'fa-solid fa-crown';
+          li.appendChild(crownIcon);
+        }
+        li.appendChild(nameSpan);
+        li.appendChild(scoreSpan);
+        scoreboard.appendChild(li);
+      });
+    })
+    .catch((error) => console.error('Error:', error));
+}
+
+updateScoreboard();
