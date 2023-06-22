@@ -117,7 +117,7 @@ function has_game_ended() {
     
     if (hitLeftWall || hitRightWall || hitToptWall || hitBottomWall) {
       game_over = true;
-      fetch('http://localhost:3000/topScores')
+      fetch('https://snake.zettler.dev/topScores')
         .then(response => response.json())
         .then(data => {
           const minTopScore = data.length < 5 ? 0 : data[data.length-1].score;
@@ -240,7 +240,7 @@ document.getElementById('scoreboardButton').addEventListener('click', function()
 });
 
 function postScore(username, score) {
-    fetch('http://localhost:3000/score', {
+    fetch('https://snake.zettler.dev/score', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -258,7 +258,7 @@ function postScore(username, score) {
 
 
 function updateScoreboard() {
-  fetch('http://localhost:3000/topScores')
+  fetch('https://snake.zettler.dev/topScores')
     .then(response => response.json())
     .then(data => {
       const scoreboard = document.getElementById('scores');
