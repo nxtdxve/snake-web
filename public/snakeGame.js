@@ -252,7 +252,12 @@ function move_snake() {
 }
 
 function restart_game(event) {
-    if(game_over) {
+    // Get the element that was touched
+    let targetElement = event.target || event.srcElement;
+  
+    // Check if the touched element is not a button
+    if(targetElement.nodeName !== 'BUTTON') {
+      if(game_over) {
         snake = [
             { x: 200, y: 200 },
             { x: 190, y: 200 },
@@ -268,14 +273,14 @@ function restart_game(event) {
         game_over = false;
         main();
         gen_food();
-    }
-    else {
+      }
+      else {
         change_direction(event);
+      }
     }
-}
+  }
+  document.addEventListener("touchstart", restart_game);
 
-document.addEventListener('keydown', restart_game);
-document.addEventListener('touchend', restart_game);
 
 document.getElementById('scoreboardButton').addEventListener('click', function() {
     var scoreboard = document.getElementById('scoreboard');
