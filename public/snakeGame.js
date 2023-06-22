@@ -191,6 +191,50 @@ function change_direction(event) {
     }
 }
 
+let touchStartX = 0;
+let touchStartY = 0;
+let touchEndX = 0;
+let touchEndY = 0;
+
+const touchStartHandler = (e) => {
+  touchStartX = e.touches[0].clientX;
+  touchStartY = e.touches[0].clientY;
+};
+
+const touchMoveHandler = (e) => {
+    e.preventDefault();
+    touchEndX = e.touches[0].clientX;
+    touchEndY = e.touches[0].clientY;
+  };
+
+const touchEndHandler = () => {
+  let diffX = touchEndX - touchStartX;
+  let diffY = touchEndY - touchStartY;
+
+  if (Math.abs(diffX) > Math.abs(diffY)) { // Horizontal swipe
+    if (diffX > 0 && dx !== -10) { // Swipe right
+      dx = 10;
+      dy = 0;
+    } else if (diffX < 0 && dx !== 10) { // Swipe left
+      dx = -10;
+      dy = 0;
+    }
+  } else { // Vertical swipe
+    if (diffY > 0 && dy !== -10) { // Swipe down
+      dx = 0;
+      dy = 10;
+    } else if (diffY < 0 && dy !== 10) { // Swipe up
+      dx = 0;
+      dy = -10;
+    }
+  }
+};
+
+document.addEventListener('touchstart', touchStartHandler, false);
+document.addEventListener('touchmove', touchMoveHandler, { passive: false });
+document.addEventListener('touchend', touchEndHandler, false);
+
+
 function move_snake() {
     const head = { x: snake[0].x + dx, y: snake[0].y + dy };
     // Add the new head to the beginning of snake body
@@ -229,6 +273,9 @@ function restart_game(event) {
         change_direction(event);
     }
 }
+
+document.addEventListener('keydown', restart_game);
+document.addEventListener('touchend', restart_game);
 
 document.getElementById('scoreboardButton').addEventListener('click', function() {
     var scoreboard = document.getElementById('scoreboard');
