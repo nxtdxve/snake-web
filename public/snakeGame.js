@@ -1,6 +1,6 @@
-const board_background = "#191919";
-const snake_col = '#ffc080';
-const snake_border = 'darkblue';
+let board_background = "#191919";
+let snake_col = '#ffc080';
+let snake_border = 'darkblue';
 
 let snake = [
     { x: 200, y: 200 },
@@ -90,8 +90,10 @@ function drawSnake() {
     snake.forEach(drawSnakePart)
 }
 
+let apple_col = 'lightgreen';
+
 function drawFood() {
-    snakeboard_ctx.fillStyle = 'lightgreen';
+    snakeboard_ctx.fillStyle = apple_col;
     snakeboard_ctx.strokestyle = 'darkgreen';
     snakeboard_ctx.fillRect(food_x, food_y, 10, 10);
     snakeboard_ctx.strokeRect(food_x, food_y, 10, 10);
@@ -236,19 +238,17 @@ document.addEventListener('touchend', touchEndHandler, false);
 
 
 function move_snake() {
-    const head = { x: snake[0].x + dx, y: snake[0].y + dy };
-    // Add the new head to the beginning of snake body
-    snake.unshift(head);
-    const has_eaten_food = snake[0].x === food_x && snake[0].y === food_y;
-    if (has_eaten_food) {
-        score += 1;
-        document.getElementById('score').innerHTML = score;
-        // Generate new food location
-        gen_food();
-    } else {
-        // Remove the last part of snake body
-        snake.pop();
-    }
+  const head = { x: snake[0].x + dx, y: snake[0].y + dy };
+  snake.unshift(head);
+  const has_eaten_food = snake[0].x === food_x && snake[0].y === food_y;
+  if (has_eaten_food) {
+      score += 1;
+      document.getElementById('score').innerHTML = score;
+      gen_food();
+  } else {
+      snake.pop();
+  }
+  drawSnake();  // Redraw the snake after moving
 }
 
 function restart_game(event) {
@@ -290,6 +290,14 @@ document.getElementById('scoreboardButton').addEventListener('click', function()
         scoreboard.classList.add('active');
     }
 });
+
+let shopButton = document.getElementById('shopButton');
+let shop = document.getElementById('shop');
+
+shopButton.addEventListener('click', function() {
+  shop.classList.toggle('active');
+});
+
 
 function postScore(username, score) {
     fetch('/api/score', {
@@ -339,3 +347,64 @@ function updateScoreboard() {
 }
 
 updateScoreboard();
+
+let rainbowInterval;
+// Colors in RGB
+const colors = [
+  [255, 0, 0],    // Red
+  [255, 165, 0],  // Orange
+  [255, 255, 0],  // Yellow
+  [0, 128, 0],    // Green
+  [0, 0, 255],    // Blue
+  [75, 0, 130],   // Indigo
+  [238, 130, 238], // Violet
+];
+
+let colorIndex = 0;
+let increment = 0;
+let incrementStep = 0.02;
+
+// Converts an RGB color array to a CSS color string
+function rgbToCssColor(rgb) {
+  return 'rgb(' + rgb.join(',') + ')';
+}
+
+function transitionColor(startColor, endColor, ratio) {
+  let [r1, g1, b1] = startColor;
+  let [r2, g2, b2] = endColor;
+  
+  let r = r1 + Math.round((r2 - r1) * ratio);
+  let g = g1 + Math.round((g2 - g1) * ratio);
+  let b = b1 + Math.round((b2 - b1) * ratio);
+  
+  return [r, g, b];
+}
+
+function changeColor() {
+  if (rainbowInterval) {
+    clearInterval(rainbowInterval);
+  }
+  
+  rainbowInterval = setInterval(() => {
+    let startColor = colors[colorIndex];
+    let endColor = colors[(colorIndex + 1) % colors.length];
+
+    let color = transitionColor(startColor, endColor, increment);
+    
+    snake_col = rgbToCssColor(color);
+    apple_col = rgbToCssColor(color); // Change the apple color
+    document.documentElement.style.setProperty('--global-theme-accent', rgbToCssColor(color));
+
+    increment += incrementStep;
+    if (increment >= 1) {
+      increment = 0;
+      colorIndex = (colorIndex + 1) % colors.length;
+    }
+  }, 100);
+}
+
+// TODO:
+// - add filtering so same score but newer is lower instead of higher
+// - add a modal for username input
+// - add harder difficulty
+// - scoreboard diffrent style a bit for top three

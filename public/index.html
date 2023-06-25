@@ -10,6 +10,7 @@
     <script src="https://kit.fontawesome.com/695a29d1ed.js" crossorigin="anonymous"></script>
     <title>Snake Game</title>
     <script src="animatedTitle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chroma-js/2.1.2/chroma.min.js"></script>
 </head>
 
 <body>
@@ -41,6 +42,11 @@
         </ul>
 
       </div>
+      <div id="shop" class="sidebar">
+        <h2>Skins</h2>
+            <button onclick="changeColor('rainbow')">Rainbow</button>
+    </div>
+
     <div class="game-container">
         <div id="score">0</div>
         <canvas id="snakeboard" width="400" height="400"></canvas>
@@ -49,7 +55,7 @@
                 <i i="leaderboard" class="fa-solid fa-crown"></i>
             </button>
             <button id="shopButton" class="shopButton" title="Shows the Skin-Shop">
-                <i id="shop" class="fa-solid fa-shop"></i>
+                <i id="skins" class="fa-solid fa-shop"></i>
             </button>
         </div>
         <button id="startButton">Start Game</button>

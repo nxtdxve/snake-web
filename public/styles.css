@@ -5,6 +5,7 @@
   rgb(255, 128, 128) -- red 
   */
   --global-theme-accent: rgb(255, 192, 128);
+  transition: --global-theme-accent 2s ease;
   --global-theme-text: rgb(200, 200, 200);
   --global-theme-text-light: rgb(255, 255, 255);
   --global-theme-text-hovered: rgb(255, 255, 255);
@@ -118,6 +119,25 @@ button i {
   z-index: 5;
   color: var(--global-theme-text);
   text-shadow: 0 0 5px #ACACAC;
+  border-radius: 3px;
+  transition-duration: .5s;
+  height: 25px;
+  background: var(--global-theme-element-bg);
+  border: 1px var(--global-theme-element-border) solid;
+  border-color: var(--global-theme-accent);
+}
+
+#startButton:hover {
+  color: var(--global-theme-text-hovered);
+  background: var(--global-theme-element-bg-active);
+  border-color: var(--global-theme-accent);
+  transform: translate(-50%, -50%) scale(1.05); 
+  box-shadow: 0px 0px 10px var(--global-theme-accent-hovered); 
+}
+
+#startButton:active {
+  background: var(--global-theme-element-bg-active);
+  transform: translate(-50%, -50%) scale(1); 
 }
 
 #scoreboard {
@@ -178,4 +198,23 @@ button i {
   color: var(--global-theme-text);
   text-shadow: 0 0 5px var(--global-theme-accent);
   text-align: right;
+}
+
+#shop {
+  position: fixed;
+  width: 300px;
+  height: 100%;
+  right: -340px;
+  top: 0;
+  background-color: var(--global-theme-element-bg);
+  color: var(--global-theme-text);
+  padding: 20px;
+  transition: right 0.5s ease;
+  border-left: 1px solid var(--global-theme-accent);
+  overflow-y: auto;
+  text-shadow: 0 0 5px #ACACAC;
+}
+
+#shop.active {
+  right: 0;
 }
