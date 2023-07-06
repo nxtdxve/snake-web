@@ -109,24 +109,35 @@ function drawSnakePart(snakePart) {
 }
 
 function has_game_ended() {
-    for (let i = 4; i < snake.length; i++) {
-      if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) return true
-    }
-    const hitLeftWall = snake[0].x < 0;
-    const hitRightWall = snake[0].x > snakeboard.width - 10;
-    const hitToptWall = snake[0].y < 0;
-    const hitBottomWall = snake[0].y > snakeboard.height - 10;
-    
-    if (hitLeftWall || hitRightWall || hitToptWall || hitBottomWall) {
+  for (let i = 4; i < snake.length; i++) {
+      const self_collision = snake[i].x === snake[0].x && snake[i].y === snake[0].y;
+      if (self_collision) {
+          checkHighScore();
+          return true;
+      }
+  }
+  const hitLeftWall = snake[0].x < 0;
+  const hitRightWall = snake[0].x > snakeboard.width - 10;
+  const hitTopWall = snake[0].y < 0;
+  const hitBottomWall = snake[0].y > snakeboard.height - 10;
+  
+  if (hitLeftWall || hitRightWall || hitTopWall || hitBottomWall) {
       game_over = true;
-      fetch('/api/topScores')
-        .then(response => response.json())
-        .then(data => {
+      checkHighScore();
+      return true;
+  }
+
+  return false;
+}
+
+function checkHighScore() {
+  fetch('/api/topScores')
+      .then(response => response.json())
+      .then(data => {
           const minTopScore = data.length < 5 ? 0 : data[data.length-1].score;
           if (score > minTopScore) {
-            // Prompt the user for their name, then post the score
-            const username = prompt('Enter your username:');
-            postScore(username, score);
+              const username = prompt('Enter your username:');
+              postScore(username, score);
           }
           snakeboard_ctx.fillStyle = 'rgb(255, 128, 128)';
           snakeboard_ctx.font = '65px VT323';
@@ -135,12 +146,9 @@ function has_game_ended() {
           snakeboard_ctx.fillText('Game Over', snakeboard.width / 2, snakeboard.height / 2);
           snakeboard_ctx.font = '30px VT323';
           snakeboard_ctx.fillText('Press any button to continue', snakeboard.width / 2, snakeboard.height / 2 + 40);  
-        });
-      return true;
-    }
-  
-    return false;
-  }
+      });
+}
+
 
 function random_food(min, max) {
     return Math.round((Math.random() * (max - min) + min) / 10) * 10;
